@@ -36,7 +36,7 @@ def fetch_youtube_data(api_key, regions):
     return pandas.DataFrame(video_data)
 
 
-api_key = 'AIzaSyCKeTJ871OrOQ7SgB53IL_l-37E3dDE82I'
+api_key = ''
 regions = ['IN','GB','US']
 df = fetch_youtube_data(api_key, regions)
 df.to_csv('C:\\Users\\Swati_Rallabandi\\Desktop\\PySparkProjects\\airflow-output\\output.csv',index = False, encoding="utf-8-sig")
