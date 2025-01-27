@@ -1,8 +1,7 @@
+from datetime import datetime
+
 import pandas
-from Tools.scripts.dutree import display
 from googleapiclient.discovery import build
-from unicodedata import category
-from pandas import *
 
 
 def fetch_youtube_data(api_key, regions):
@@ -19,7 +18,7 @@ def fetch_youtube_data(api_key, regions):
         videos = response['items']
         for i, video in enumerate(videos):
             video_info = {
-                'rank': i+1,
+                'rank': i + 1,
                 'region_code': region,
                 'category_id': video['snippet']['categoryId'],
                 'video_id': video['id'],
@@ -36,7 +35,11 @@ def fetch_youtube_data(api_key, regions):
     return pandas.DataFrame(video_data)
 
 
-api_key = ''
-regions = ['IN','GB','US']
+api_key = 'AIzaSyCKeTJ871OrOQ7SgB53IL_l-37E3dDE82I'
+regions = ['AE', 'AR', 'AU', 'BR', 'CA', 'CH', 'CL', 'CO', 'DE', 'ES', 'GR', 'HK', 'ID', 'IL', 'IQ',
+           'IS', 'IT', 'JM', 'JP', 'KR', 'MX', 'MY', 'NL', 'NZ', 'PK', 'RU', 'SA', 'SG', 'ZA', 'GB', 'US', 'IN',
+           'FR']
 df = fetch_youtube_data(api_key, regions)
-df.to_csv('C:\\Users\\Swati_Rallabandi\\Desktop\\PySparkProjects\\airflow-output\\output.csv',index = False, encoding="utf-8-sig")
+current_date = datetime.now().strftime("%d-%m-%Y-%H-%M")
+file_path = 'C:\\Users\\Swati_Rallabandi\\Desktop\\PySparkProjects\\airflow-output\\output_' + current_date + '.csv'
+df.to_csv(file_path, index=False, encoding="utf-8-sig")
