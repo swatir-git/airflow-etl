@@ -35,7 +35,7 @@ def fetch_youtube_data(api_key, regions):
     return pandas.DataFrame(video_data)
 
 
-api_key = 'AIzaSyCKeTJ871OrOQ7SgB53IL_l-37E3dDE82I'
+api_key = ''
 regions = ['AE', 'AR', 'AU', 'BR', 'CA', 'CH', 'CL', 'CO', 'DE', 'ES', 'GR', 'HK', 'ID', 'IL', 'IQ',
            'IS', 'IT', 'JM', 'JP', 'KR', 'MX', 'MY', 'NL', 'NZ', 'PK', 'RU', 'SA', 'SG', 'ZA', 'GB', 'US', 'IN',
            'FR']
