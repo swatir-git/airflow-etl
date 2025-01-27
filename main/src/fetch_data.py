@@ -2,10 +2,11 @@ from datetime import datetime
 
 import pandas
 from googleapiclient.discovery import build
+import main.config as config
 
 
 def fetch_youtube_data(**kwargs):
-    api_key = 'AIzaSyCKeTJ871OrOQ7SgB53IL_l-37E3dDE82I'
+    api_key = config.api_key
     youtube = build('youtube', 'v3', developerKey=api_key)
     video_data = []
     regions = kwargs['country_codes']
@@ -34,10 +35,7 @@ def fetch_youtube_data(**kwargs):
                 'comment_count': video['statistics'].get('commentCount', 0)
             }
             video_data.append(video_info)
-    return pandas.DataFrame(video_data)
-
-
-df = fetch_youtube_data()
-current_date = datetime.now().strftime("%d-%m-%Y-%H-%M")
-file_path = 'C:\\Users\\Swati_Rallabandi\\Desktop\\PySparkProjects\\airflow-output\\output_' + current_date + '.csv'
-df.to_csv(file_path, index=False, encoding="utf-8-sig")
+    df = pandas.DataFrame(video_data)
+    current_date = datetime.now().strftime("%d-%m-%Y-%H-%M")
+    file_path = config.output_filepath + current_date + '.csv'
+    df.to_csv(file_path, index=False, encoding="utf-8-sig")
