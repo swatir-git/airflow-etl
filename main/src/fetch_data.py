@@ -4,9 +4,11 @@ import pandas
 from googleapiclient.discovery import build
 
 
-def fetch_youtube_data(api_key, regions):
+def fetch_youtube_data(**kwargs):
+    api_key = 'AIzaSyCKeTJ871OrOQ7SgB53IL_l-37E3dDE82I'
     youtube = build('youtube', 'v3', developerKey=api_key)
     video_data = []
+    regions = kwargs['country_codes']
     for region in regions:
         request = youtube.videos().list(
             part='snippet,contentDetails,statistics',
@@ -35,11 +37,7 @@ def fetch_youtube_data(api_key, regions):
     return pandas.DataFrame(video_data)
 
 
-api_key = ''
-regions = ['AE', 'AR', 'AU', 'BR', 'CA', 'CH', 'CL', 'CO', 'DE', 'ES', 'GR', 'HK', 'ID', 'IL', 'IQ',
-           'IS', 'IT', 'JM', 'JP', 'KR', 'MX', 'MY', 'NL', 'NZ', 'PK', 'RU', 'SA', 'SG', 'ZA', 'GB', 'US', 'IN',
-           'FR']
-df = fetch_youtube_data(api_key, regions)
+df = fetch_youtube_data()
 current_date = datetime.now().strftime("%d-%m-%Y-%H-%M")
 file_path = 'C:\\Users\\Swati_Rallabandi\\Desktop\\PySparkProjects\\airflow-output\\output_' + current_date + '.csv'
 df.to_csv(file_path, index=False, encoding="utf-8-sig")
