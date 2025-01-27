@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd124356-a9ff-4228-864d-e9a78504675e" name="Changes" comment="Dag added">
-      <change beforePath="$PROJECT_DIR$/main/src/fetch_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/fetch_data.py" afterDir="false" />
-    </list>
+    <list default="true" id="cd124356-a9ff-4228-864d-e9a78504675e" name="Changes" comment="Dag added and method updated" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -162,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737973850761</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Dag added and method updated">
+      <option name="closed" value="true" />
+      <created>1737974781274</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1737974781274</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,6 +185,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fetchData implemented - updated" />
     <MESSAGE value="Dag added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dag added" />
+    <MESSAGE value="Dag added and method updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dag added and method updated" />
   </component>
 </project>
