@@ -2,7 +2,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
-from fetch_data import fetch_youtube_data
+from fetch_process_data import fetch_youtube_data, process_data
 
 default_args = {
     'owner': 'airflow',
@@ -22,16 +22,30 @@ dag = DAG(
     schedule_interval=timedelta(days=1)
 )
 
-execute_process = PythonOperator(
+dag_process = DAG(
+    dag_id='process_data',
+    default_args=default_args,
+    description='Clean the extracted data',
+    schedule_interval=timedelta(days=1)
+)
+
+fetch_data_process = PythonOperator(
     task_id='fetch_data_from_youtube_data_api',
     python_callable=fetch_youtube_data,
     op_kwargs={
-        'country_codes': ['AE', 'AR', 'AU', 'BR', 'CA', 'CH', 'CL', 'CO', 'DE', 'ES', 'GR', 'HK', 'ID', 'IL', 'IQ',
+        'country_codes': ['AR', 'AU', 'BR', 'CA', 'CH', 'CL', 'CO', 'DE', 'ES', 'GR', 'HK', 'ID', 'IL', 'IQ',
                           'IS', 'IT', 'JM', 'JP', 'KR', 'MX', 'MY', 'NL', 'NZ', 'PK', 'RU', 'SA', 'SG', 'ZA', 'GB',
                           'US', 'IN',
                           'FR']
     },
     dag=dag,
+
 )
 
-execute_process
+process_data_job = PythonOperator(
+    task_id='process_extracted_data',
+    python_callable=process_data(),
+    dag=dag_process
+)
+
+fetch_data_process >> process_data_job
