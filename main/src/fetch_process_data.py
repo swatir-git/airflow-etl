@@ -9,6 +9,13 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 
 import main.config as config
 import re
+from azure_utils import set_azure_configuration
+
+spark = (SparkSession.builder.appName("clean data").config(
+    "spark.jars.packages",
+    "org.apache.hadoop:hadoop-azure:3.3.1,com.microsoft.azure:azure-storage:8.6.6")
+         .master('local[*]').getOrCreate())
+spark.sparkContext.setLogLevel("DEBUG")
 
 
 def fetch_youtube_data(**kwargs):
@@ -56,7 +63,6 @@ def fetch_youtube_data(**kwargs):
     file_path = config.output_filepath + 'extract_' + current_date + '.csv'
     df.to_csv(file_path, index=False, encoding="utf-8-sig")
 
-
 def remove_emoji(value):
     emoji = re.compile("["
                        u"\U0001F600-\U0001F64F"
@@ -84,7 +90,6 @@ def remove_emoji(value):
 def process_data():
     current_date = datetime.now().strftime("%d%m%Y")
     input_path = config.output_filepath + 'extract_' + current_date + '.csv'
-    spark = SparkSession.builder.appName("clean data").master('local[*]').getOrCreate()
 
     df_schema = StructType([
         StructField('rank', IntegerType()),
@@ -110,6 +115,16 @@ def process_data():
     df2 = df_filtered.withColumn('title', remove_emoji_udf(col('title')))
     df2.show()
     df_exploded = df_corrected.withColumn('tags_ex', explode('tags')).drop('tags')
+    # current_date = datetime.now().strftime("%d%m%Y")
+    # file_path = config.output_filepath + '/output/' + current_date
+    # df_exploded.write.mode('overwrite').parquet(file_path)
+    return df_exploded
+
+def upload_data_to_storage():
+    set_azure_configuration(spark, config.azure_storage_acc, config.azure_client_id, config.azure_client_secret,
+                            config.azure_tenant_id)
+    df = process_data()
     current_date = datetime.now().strftime("%d%m%Y")
-    file_path = config.output_filepath + '/output/' + current_date
-    df_exploded.write.partitionBy('category_id').mode('overwrite').parquet(file_path)
+    results_path = config.output_filepath + '/output/' + current_date
+    write_path = "abfss://" + config.azure_container_name + "@" + config.azure_storage_acc + ".dfs.core.windows.net/" + results_path
+    df.write.mode("overwrite").format("parquet").save(write_path)

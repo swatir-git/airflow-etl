@@ -2,7 +2,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
-from fetch_process_data import fetch_youtube_data, process_data
+from fetch_process_data import fetch_youtube_data, process_data, upload_data_to_storage
 
 default_args = {
     'owner': 'airflow',
@@ -48,4 +48,4 @@ process_data_job = PythonOperator(
     dag=dag_process
 )
 
-fetch_data_process >> process_data_job
+fetch_data_process >> upload_data_to_storage
